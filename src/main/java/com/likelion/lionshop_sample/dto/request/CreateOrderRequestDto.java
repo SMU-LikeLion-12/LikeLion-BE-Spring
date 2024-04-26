@@ -1,5 +1,6 @@
-package com.likelion.lionshop_sample.week1.dto;
+package com.likelion.lionshop_sample.dto.request;
 
+import com.likelion.lionshop_sample.entity.Order;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,5 +18,14 @@ public class CreateOrderRequestDto {
 
     //가격
     public int price;
+
+    //OrderDto -> Order Entity로 변환하는 메서드
+    public Order toEntity() {
+        return Order.builder()
+                .name(name)
+                .quantity(quantity)
+                .price(price)
+                .build();
+    }
 
 }

@@ -1,4 +1,4 @@
-package com.likelion.lionshop_sample.week1.dto;
+package com.likelion.lionshop_sample.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @Getter
 public class UpdateOrderRequestDto {
 
-    //상품 id
     public Long id;
 
     //상품 이름
