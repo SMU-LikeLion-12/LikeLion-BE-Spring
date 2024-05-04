@@ -15,44 +15,30 @@ import java.util.Optional;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-@Transactional
+@Transactional(readOnly = true)
 public class UserService {
     private final UserRepository userRepository;
-
+    @Transactional
     public UserResponseDto createUser(CreateUserRequestDto createUserRequestDto) {
         User user = createUserRequestDto.toEntity();
         userRepository.save(user);
         return UserResponseDto.from(user);
     }
-    @Transactional(readOnly = true)
     public UserResponseDto getUser(Long userId) {
-        Optional<User> user = userRepository.findById(userId);
-        if(user.isEmpty()) {
-            throw new IllegalArgumentException("회원이 존재하지 않습니다.");
-        }
-        else {
-            User users = user.get();
-            return UserResponseDto.from(users);
-        }
+        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("사용자가 존재히지 않습니다."));
+        return UserResponseDto.from(user);
     }
-
+    @Transactional
     public UserResponseDto updateUser(UpdateUserRequestDto userRequestDto) {
         Long userId = userRequestDto.getId();
-        Optional<User> user = userRepository.findById(userId);
-        if(user.isEmpty()) {
-            throw new IllegalArgumentException("회원이 존재하지 않습니다.");
-        }
-        else {
-            User users = user.get();
-            users.update(userRequestDto);
-            userRepository.save(users);
-            return UserResponseDto.from(users);
-        }
+        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("사용자가 존재하지 않습니다."));
+        user.update(userRequestDto);
+        userRepository.save(user);
+        return UserResponseDto.from(user);
+
     }
+    @Transactional
     public void deleteUser(Long userId) {
-        if(userId==null) {
-            throw new IllegalArgumentException("회원이 존재하지 않습니다.");
-        }
         userRepository.deleteById(userId);
     }
 }

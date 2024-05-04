@@ -13,63 +13,44 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
-@Transactional
+@Transactional(readOnly = true)
 public class OrderService {
     private final OrderRepository orderRepository;
     private final UserRepository userRepository;
+    @Transactional
     public List<OrderResponseDto> createOrder(List<CreateOrderRequestDto> createOrderRequestDto) {
         List<Order> createdOrders = new ArrayList<>();
         for (CreateOrderRequestDto requestDto : createOrderRequestDto) {
             String name = requestDto.getName();
             double price = requestDto.getPrice();
             int quantity = requestDto.getQuantity();
-
+            User user = userRepository.findById(requestDto.getUser().getId()).orElseThrow(()-> new IllegalArgumentException("사용자가 존재하지 않습니다."));
             Order savedOrder = orderRepository.save(requestDto.toEntity());
-            Optional<User> userId = userRepository.findById(requestDto.getUserId());
-            if(userId.isEmpty()) {
-                throw new IllegalArgumentException(("회원이 존재하지 않습니다."));
-            }
-            User user = userId.get();
-            savedOrder.specifyUser(user);
             createdOrders.add(savedOrder);
         }
         return OrderResponseDto.from(createdOrders);
     }
 
-    @Transactional(readOnly = true)
     public OrderResponseDto getOrder(Long orderId) {
-        Optional<Order> order = orderRepository.findById(orderId);
-        if (order.isEmpty()) {
-            throw new IllegalArgumentException("조회한 상품이 존재하지 않습니다.");
-        }
-        else {
-            Order orders = order.get();
-            return OrderResponseDto.from(orders);
-        }
+        Order order = orderRepository.findById(orderId).orElseThrow(()-> new IllegalArgumentException("상품이 존재하지 않습니다."));
+        return OrderResponseDto.from(order);
+
     }
+    @Transactional
     public void deleteOrder(Long orderId) {
-        if(orderId == null) {
-            throw new IllegalArgumentException("상품이 존재하지 않습니다.");
-        }
         orderRepository.deleteById(orderId);
     }
-
+    @Transactional
     public OrderResponseDto updateOrder(UpdateOrderRequestDto updateOrderRequestDto) {
         Long orderId = updateOrderRequestDto.getId();
-        Optional<Order> order = orderRepository.findById(orderId);
-        if (order.isEmpty()) {
-            throw new IllegalArgumentException("상품이 존재하지 않습니다.");
-        }
-        else {
-            Order orders = order.get();
-            orders.update(updateOrderRequestDto);
-            orderRepository.save(orders);
-            return OrderResponseDto.from(orders);
-        }
+        Order order = orderRepository.findById(orderId).orElseThrow(()-> new IllegalArgumentException("상품이 존재하지 않습니다."));
+        order.update(updateOrderRequestDto);
+        orderRepository.save(order);
+        return OrderResponseDto.from(order);
+
     }
 }

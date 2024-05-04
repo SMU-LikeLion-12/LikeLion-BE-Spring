@@ -40,9 +40,4 @@ public class Order {
         quantity = updateOrderRequestDto.getQuantity();
         price = updateOrderRequestDto.getPrice();
     }
-
-    public void specifyUser(User user) {
-        this.user = user;
-    }
-
 }

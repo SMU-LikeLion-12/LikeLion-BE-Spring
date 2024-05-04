@@ -44,7 +44,5 @@ public class User {
     public void update(UpdateUserRequestDto userRequestDto) {
         name = userRequestDto.getName();
         address = userRequestDto.getAddress();
-
     }
-
 }

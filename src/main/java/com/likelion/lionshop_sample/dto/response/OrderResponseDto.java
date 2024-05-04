@@ -23,7 +23,7 @@ public class OrderResponseDto {
 
     public int price;
 
-    public Long userId;
+    public Long user;
 
     //Order Entity -> Response Dto로 변환하는 메서드
     public static OrderResponseDto from(Order order) {
@@ -32,7 +32,7 @@ public class OrderResponseDto {
                 .name(order.getName())
                 .quantity(order.getQuantity())
                 .price(order.getPrice())
-                .userId(order.getUser().getId())
+                .user(order.getUser().getId())
                 .build();
     }
     public static List<OrderResponseDto> from(List<Order> orders) {
