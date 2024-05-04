@@ -46,8 +46,5 @@ public class User {
         address = userRequestDto.getAddress();
 
     }
-    public void specifyUser(CreateOrderRequestDto createOrderRequestDto) {
-        Long userId = createOrderRequestDto.getUserId();
-    }
 
 }
