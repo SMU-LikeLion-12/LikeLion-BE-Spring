@@ -1,5 +1,6 @@
 package com.likelion.lionshop_sample.dto.request;
 
+import com.likelion.lionshop_sample.entity.Order;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

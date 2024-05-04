@@ -1,5 +1,6 @@
 package com.likelion.lionshop_sample.entity;
 
+import com.likelion.lionshop_sample.dto.request.CreateOrderRequestDto;
 import com.likelion.lionshop_sample.dto.request.UpdateOrderRequestDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -12,7 +13,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "order")
+@Table(name = "orders")
+//외래키는 order 테이블에 존재합니다. -> 외래키가 존재하는 곳은 '연관관계의 주인'입니다!
 public class Order {
 
     @Id
@@ -28,11 +30,19 @@ public class Order {
     @Column
     private int price;
 
-    // Dto를 사용해서 update하는 메서드.
-    // Entity에는 Setter를 사용하지 않는 것이 좋음.
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User user;
+    //Order와 User는 N:1 관계입니다.
+
     public void update(UpdateOrderRequestDto updateOrderRequestDto) {
         name = updateOrderRequestDto.getName();
         quantity = updateOrderRequestDto.getQuantity();
         price = updateOrderRequestDto.getPrice();
     }
+
+    public void specifyUser(User user) {
+        this.user = user;
+    }
+
 }

@@ -4,55 +4,72 @@ import com.likelion.lionshop_sample.dto.request.CreateOrderRequestDto;
 import com.likelion.lionshop_sample.dto.response.OrderResponseDto;
 import com.likelion.lionshop_sample.dto.request.UpdateOrderRequestDto;
 import com.likelion.lionshop_sample.entity.Order;
+import com.likelion.lionshop_sample.entity.User;
+import com.likelion.lionshop_sample.repository.OrderRepository;
+import com.likelion.lionshop_sample.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.stereotype.Service;
-
+import org.springframework.transaction.annotation.Transactional;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
+@Transactional
 public class OrderService {
+    private final OrderRepository orderRepository;
+    private final UserRepository userRepository;
+    public List<OrderResponseDto> createOrder(List<CreateOrderRequestDto> createOrderRequestDto) {
+        List<Order> createdOrders = new ArrayList<>();
+        for (CreateOrderRequestDto requestDto : createOrderRequestDto) {
+            String name = requestDto.getName();
+            double price = requestDto.getPrice();
+            int quantity = requestDto.getQuantity();
 
-    public void createOrder(List<CreateOrderRequestDto> createOrderRequestDto) {
-        createOrderRequestDto.forEach(orderRequestDto -> {
-            log.info("[ Order Service ] 주문 생성 이름 ---> {}", orderRequestDto.getName());
-
-            //DTO를 Entity로 변환
-            Order order = orderRequestDto.toEntity();
-
-            //DB에 저장 로직이 들어갈 부분 (다음 주차)
-
-        });
+            Order savedOrder = orderRepository.save(requestDto.toEntity());
+            Optional<User> userId = userRepository.findById(requestDto.getUserId());
+            if(userId.isEmpty()) {
+                throw new IllegalArgumentException(("회원이 존재하지 않습니다."));
+            }
+            User user = userId.get();
+            savedOrder.specifyUser(user);
+            createdOrders.add(savedOrder);
+        }
+        return OrderResponseDto.from(createdOrders);
     }
 
+    @Transactional(readOnly = true)
     public OrderResponseDto getOrder(Long orderId) {
-        log.info("[ Order Service ] 주문 가져오기 ID ---> {}", orderId);
-
-        //DB에서 가져오는 로직이 들어갈 부분 (다음 주차)
-
-        //(임시) Order Entity
-        Order order = new Order();
-
-        return OrderResponseDto.from(order);
+        Optional<Order> order = orderRepository.findById(orderId);
+        if (order.isEmpty()) {
+            throw new IllegalArgumentException("조회한 상품이 존재하지 않습니다.");
+        }
+        else {
+            Order orders = order.get();
+            return OrderResponseDto.from(orders);
+        }
     }
-
     public void deleteOrder(Long orderId) {
-        log.info("[ Order Service ] 주문 삭제하기 ID ---> {}", orderId);
-
-        //DB에서 삭제하는 로직이 들어갈 부분 (다음 주차)
+        if(orderId == null) {
+            throw new IllegalArgumentException("상품이 존재하지 않습니다.");
+        }
+        orderRepository.deleteById(orderId);
     }
 
-    public void updateOrder(UpdateOrderRequestDto updateOrderRequestDto) {
-        log.info("[ Order Service ] 주문 수정하기 ID ---> {}", updateOrderRequestDto.getId());
-        //DB에서 가져오는 로직이 들어갈 부분 (다음 주차)
-        //임시 Order Entity
-        Order order = new Order();
-
-        //DB에서 수정하는 로직이 들어갈 부분
-        order.update(updateOrderRequestDto);
-
-        //DB에 저장 로직이 들어갈 부분 (다음 주차)
+    public OrderResponseDto updateOrder(UpdateOrderRequestDto updateOrderRequestDto) {
+        Long orderId = updateOrderRequestDto.getId();
+        Optional<Order> order = orderRepository.findById(orderId);
+        if (order.isEmpty()) {
+            throw new IllegalArgumentException("상품이 존재하지 않습니다.");
+        }
+        else {
+            Order orders = order.get();
+            orders.update(updateOrderRequestDto);
+            orderRepository.save(orders);
+            return OrderResponseDto.from(orders);
+        }
     }
-
 }

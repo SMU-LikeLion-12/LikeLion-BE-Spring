@@ -21,40 +21,26 @@ public class OrderController {
     private final OrderService orderService;
 
     @PostMapping("")
-    public ResponseEntity<?> createOrder(@RequestBody List<CreateOrderRequestDto> orders) {
-        orders.forEach(order -> {
-            log.info("[ Order Controller ] 이름 ---> {}", order.getName());
-            log.info("[ Order Controller ] 수량 ---> {}", order.getQuantity());
-            log.info("[ Order Controller ] 가격 ---> {}", order.getPrice());
-        });
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    public ResponseEntity<List<OrderResponseDto>> createOrder(@RequestBody List<CreateOrderRequestDto> orders) {
+        List<OrderResponseDto> responseDto = orderService.createOrder(orders);
+        return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }
-
 
     @GetMapping("/{orderId}")
     public ResponseEntity<?> getOrder(@PathVariable Long orderId) {
-        log.info("[ Order Controller ] id ---> {}", orderId);
-
-        OrderResponseDto orders = orderService.getOrder(orderId);
-        return ResponseEntity.ok(orders);
+        OrderResponseDto responseDto = orderService.getOrder(orderId);
+        return ResponseEntity.ok(responseDto);
     }
 
     @PutMapping("")
-    public String updateOrder(@RequestBody UpdateOrderRequestDto updateOrderRequestDto) {
-        log.info("[ Order Controller ] id ---> {}", updateOrderRequestDto.getId());
-        log.info("[ Order Controller ] 이름 ---> {}", updateOrderRequestDto.getName());
-        log.info("[ Order Controller ] 가격 ---> {}", updateOrderRequestDto.getPrice());
-        log.info("[ Order Controller ] 수량 ---> {}", updateOrderRequestDto.getQuantity());
-
-        orderService.updateOrder(updateOrderRequestDto);
-        return "주문 수정";
+    public ResponseEntity<?> updateOrder(@RequestBody UpdateOrderRequestDto updateOrderRequestDto) {
+        OrderResponseDto responseDto = orderService.updateOrder(updateOrderRequestDto);
+        return ResponseEntity.ok(responseDto);
     }
 
     @DeleteMapping("")
-    public String deleteOrder(@RequestParam("id") Long orderId) {
-        log.info("[ Order Controller ] id ---> {}", orderId);
-
+    public ResponseEntity<Void> deleteOrder(@RequestParam("id") Long orderId) {
         orderService.deleteOrder(orderId);
-        return "주문 삭제";
+        return ResponseEntity.noContent().build();
     }
 }

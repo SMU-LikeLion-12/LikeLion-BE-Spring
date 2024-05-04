@@ -2,6 +2,7 @@ package com.likelion.lionshop_sample.controller;
 
 import com.likelion.lionshop_sample.dto.request.CreateUserRequestDto;
 import com.likelion.lionshop_sample.dto.request.UpdateUserRequestDto;
+import com.likelion.lionshop_sample.dto.response.UserResponseDto;
 import com.likelion.lionshop_sample.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,14 +31,8 @@ public class UserController {
      */
     @PostMapping("/create")
     public ResponseEntity<?> createUser(@RequestBody CreateUserRequestDto createUserRequestDto) {
-        log.info(" [ User Controller ] 사용자 생성");
-        log.info(" [ User Controller ] 사용자 이름 --- > " + createUserRequestDto.getName());
-        log.info(" [ User Controller ] 사용자 주소 --- > " + createUserRequestDto.getAddress());
-        log.info(" [ User Controller ] 사용자 ID --- > " + createUserRequestDto.getId());
-        log.info(" [ User Controller ] 사용자 PW --- > " + createUserRequestDto.getPassword());
-
-        userService.createUser(createUserRequestDto);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        UserResponseDto responseDto = userService.createUser(createUserRequestDto);
+        return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }
 
     /**
@@ -48,9 +43,6 @@ public class UserController {
      */
     @GetMapping("/{userId}")
     public ResponseEntity<?> getUser(@PathVariable Long userId) {
-        log.info(" [ User Controller ] 사용자 조회");
-        log.info(" [ User Controller ] 사용자 ID --- > " + userId);
-
         return ResponseEntity.ok(userService.getUser(userId));
     }
 
@@ -59,13 +51,10 @@ public class UserController {
      * 사용자의 내용을 수정합니다. <br>
      * 수정된 내용을 Body에 담아서 전송합니다. <br>
      */
-    @PutMapping("/{userId}")
+    @PutMapping("")
     public ResponseEntity<?> updateUser(@RequestBody UpdateUserRequestDto userUpdateRequestDto) {
-        log.info(" [ User Controller ] 사용자 수정");
-        log.info(" [ User Controller ] 사용자 이름 --- > " + userUpdateRequestDto.getName());
-        log.info(" [ User Controller ] 사용자 주소 --- > " + userUpdateRequestDto.getAddress());
-        userService.updateUser(userUpdateRequestDto);
-        return ResponseEntity.ok(null);
+        UserResponseDto responseDto = userService.updateUser(userUpdateRequestDto);
+        return ResponseEntity.ok(responseDto);
     }
 
     /**
@@ -78,10 +67,8 @@ public class UserController {
      */
     @DeleteMapping("")
     public ResponseEntity<?> deleteUser(@RequestParam("id") Long userId) {
-        log.info(" [ User Controller ] 사용자 삭제");
-        log.info(" [ User Controller ] 사용자 ID --- > " + userId);
         userService.deleteUser(userId);
-        return ResponseEntity.ok(null);
+        return ResponseEntity.noContent().build();
     }
 
 }
