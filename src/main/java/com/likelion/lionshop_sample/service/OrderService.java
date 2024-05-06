@@ -42,7 +42,13 @@ public class OrderService {
     }
     @Transactional
     public void deleteOrder(Long orderId) {
-        orderRepository.deleteById(orderId);
+        try {
+            orderRepository.deleteById(orderId);
+
+        } catch (IllegalArgumentException exception) {
+            log.error("Invalid Parameter", exception);
+        }
+
     }
     @Transactional
     public OrderResponseDto updateOrder(UpdateOrderRequestDto updateOrderRequestDto) {

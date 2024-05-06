@@ -3,12 +3,18 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/lionshop?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: root
-
+    password: qwe335577!
+  jwt:
+    # HS512 알고리즘을 사용할 것이기 때문에 512bit, 즉 64byte 이상의 secret key를 사용
+    secret: o2eh1qu7yo978u2q1o7hyua2r7uyr2q9yi7lionshop
+    token:
+      access-expiration-time: 1
+      refresh-expiration-time: 86400000
 
   jpa:
     open-in-view: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     show-sql: true
 
 

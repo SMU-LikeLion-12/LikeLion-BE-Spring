@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j //로그 출력을 도와주는 어노테이션
@@ -36,14 +38,13 @@ public class UserController {
     }
 
     /**
-     * @param userId <br>
      * 사용자를 조회합니다. <br>
-     * 어노테이션 @PathVariable로 uri에 있는 파라미터를 가져올 수 있습니다. <br>
-     * ex) localhost:8080/user/3 에 Get Method일 경우, userId값으로 3이 전달됩니다.
      */
-    @GetMapping("/{userId}")
-    public ResponseEntity<?> getUser(@PathVariable Long userId) {
-        return ResponseEntity.ok(userService.getUser(userId));
+    @GetMapping("")
+    public ResponseEntity<?> getUser(@AuthenticationPrincipal UserDetails userDetails) {
+
+        log.info("User Email ---> {}", userDetails.getUsername());
+        return ResponseEntity.ok(userService.getUser(userDetails.getUsername()));
     }
 
     /**
@@ -70,5 +71,6 @@ public class UserController {
         userService.deleteUser(userId);
         return ResponseEntity.noContent().build();
     }
+
 
 }

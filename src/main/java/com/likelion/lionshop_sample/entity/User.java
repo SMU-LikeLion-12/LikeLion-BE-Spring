@@ -29,10 +29,13 @@ public class User {
     private String address;
 
     @Column
-    private String loginId;
+    private String email;
 
     @Column
     private String password;
+
+    @Column
+    private String roles;
 
     @Column
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
