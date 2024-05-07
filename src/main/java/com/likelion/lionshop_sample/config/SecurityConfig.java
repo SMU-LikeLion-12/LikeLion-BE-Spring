@@ -16,7 +16,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-
 @Configuration // 빈 등록
 @EnableWebSecurity // 필터 체인 관리 시작 어노테이션
 @RequiredArgsConstructor
