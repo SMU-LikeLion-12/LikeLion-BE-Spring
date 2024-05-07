@@ -1,6 +1,5 @@
 package com.likelion.lionshop_sample.global.filter;
 
-import com.likelion.lionshop_sample.repository.TokenRepository;
 import com.likelion.lionshop_sample.userDetails.CustomUserDetails;
 import com.likelion.lionshop_sample.utils.JwtUtil;
 import io.jsonwebtoken.ExpiredJwtException;
