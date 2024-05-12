@@ -25,7 +25,7 @@ public class AuthService {
         String refreshToken = jwtDto.getRefreshToken();
 
         //Access Token 으로부터 사용자 Email 추출
-        String email = jwtUtil.getEmail(accessToken);
+        String email = jwtUtil.getEmail(refreshToken);
         log.info("[ Auth Service ] Email ---> {}", email);
 
         //Access Token 에서의 Email 로 부터 DB 에 저장된 Refresh Token 가져오기

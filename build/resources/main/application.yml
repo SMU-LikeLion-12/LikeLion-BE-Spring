@@ -8,7 +8,7 @@ spring:
     # HS512 알고리즘을 사용할 것이기 때문에 512bit, 즉 64byte 이상의 secret key를 사용
     secret: o2eh1qu7yo978u2q1o7hyua2r7uyr2q9yi7lionshop
     token:
-      access-expiration-time: 1
+      access-expiration-time: 3600000
       refresh-expiration-time: 86400000
 
   jpa:
@@ -22,5 +22,3 @@ logging:
   level:
     org.hibernate.SQL: debug
 
-server:
-  port: 8000

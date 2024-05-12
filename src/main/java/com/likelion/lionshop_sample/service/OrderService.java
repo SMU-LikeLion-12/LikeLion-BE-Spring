@@ -28,8 +28,10 @@ public class OrderService {
             String name = requestDto.getName();
             double price = requestDto.getPrice();
             int quantity = requestDto.getQuantity();
-            User user = userRepository.findById(requestDto.getUser().getId()).orElseThrow(()-> new IllegalArgumentException("사용자가 존재하지 않습니다."));
-            Order savedOrder = orderRepository.save(requestDto.toEntity());
+            User user = userRepository.findById(requestDto.getUserId()).orElseThrow(()-> new IllegalArgumentException("사용자가 존재하지 않습니다."));
+            Order order = requestDto.toEntity();
+            order.setUser(user);
+            Order savedOrder = orderRepository.save(order);
             createdOrders.add(savedOrder);
         }
         return OrderResponseDto.from(createdOrders);

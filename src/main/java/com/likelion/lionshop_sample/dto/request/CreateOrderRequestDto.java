@@ -18,13 +18,12 @@ public class CreateOrderRequestDto {
     //가격
     public int price;
 
-    public User user;
+    public Long userId;
 
 
     //OrderDto -> Order Entity로 변환하는 메서드
     public Order toEntity() {
         return Order.builder()
-                .user(user)
                 .name(name)
                 .quantity(quantity)
                 .price(price)
