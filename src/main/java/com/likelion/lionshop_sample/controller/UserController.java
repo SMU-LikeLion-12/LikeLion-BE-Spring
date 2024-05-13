@@ -4,6 +4,8 @@ import com.likelion.lionshop_sample.dto.request.CreateUserRequestDto;
 import com.likelion.lionshop_sample.dto.request.UpdateUserRequestDto;
 import com.likelion.lionshop_sample.dto.response.UserResponseDto;
 import com.likelion.lionshop_sample.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/user") // uri가 /user로 시작하는 요청을 받습니다.
+@Tag(name = "사용자 API", description = "사용자 관련 API입니다.")
 public class UserController {
 
     private final UserService userService;
@@ -31,6 +34,7 @@ public class UserController {
      * SpringFramework에서 제공하는 HTTP 응답 클래스입니다. <br>
      * 여러 방식으로 Response Body, HTTP Status, Header등을 지정해서 Response를 보낼 수 있습니다.
      */
+    @Operation(method = "POST", summary = "사용자 생성", description = "사용자를 생성합니다. 인가가 필요하지 않습니다.")
     @PostMapping("/create")
     public ResponseEntity<?> createUser(@RequestBody CreateUserRequestDto createUserRequestDto) {
         UserResponseDto responseDto = userService.createUser(createUserRequestDto);
@@ -40,6 +44,7 @@ public class UserController {
     /**
      * 사용자를 조회합니다. <br>
      */
+    @Operation(method = "GET", summary = "사용자 조회", description = "인가된 토큰을 이용해 사용자를 조회합니다.")
     @GetMapping("")
     public ResponseEntity<?> getUser(@AuthenticationPrincipal UserDetails userDetails) {
 
@@ -52,9 +57,10 @@ public class UserController {
      * 사용자의 내용을 수정합니다. <br>
      * 수정된 내용을 Body에 담아서 전송합니다. <br>
      */
+    @Operation(method = "PUT", summary = "사용자 수정", description = "인가된 사용자의 정보를 수정합니다.")
     @PutMapping("")
-    public ResponseEntity<?> updateUser(@RequestBody UpdateUserRequestDto userUpdateRequestDto) {
-        UserResponseDto responseDto = userService.updateUser(userUpdateRequestDto);
+    public ResponseEntity<?> updateUser(@AuthenticationPrincipal UserDetails userDetails, @RequestBody UpdateUserRequestDto userUpdateRequestDto) {
+        UserResponseDto responseDto = userService.updateUser(userDetails.getUsername(), userUpdateRequestDto);
         return ResponseEntity.ok(responseDto);
     }
 
@@ -66,9 +72,10 @@ public class UserController {
      * 파라미터가 여러개일 경우는 '&'로 구분합니다. <br>
      * ex) localhost:8080/user?id=3&query=delete
      */
+    @Operation(method = "DELETE", summary = "사용자 삭제", description = "인가된 사용자를 삭제합니다.")
     @DeleteMapping("")
-    public ResponseEntity<?> deleteUser(@RequestParam("id") Long userId) {
-        userService.deleteUser(userId);
+    public ResponseEntity<?> deleteUser(@AuthenticationPrincipal UserDetails userDetails) {
+        userService.deleteUser(userDetails.getUsername());
         return ResponseEntity.noContent().build();
     }
 

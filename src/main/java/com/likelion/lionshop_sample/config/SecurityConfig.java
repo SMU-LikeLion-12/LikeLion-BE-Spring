@@ -30,7 +30,10 @@ public class SecurityConfig {
             "/login", //로그인은 인증이 필요하지 않음
             "/user/create", //회원가입은 인증이 필요하지 않음
             "/auth/reissue", //토큰 재발급은 인증이 필요하지 않음
-            "/health"
+            "/health",
+            "api/usage",
+            "/swagger-ui/**", //swagger 관련 URL
+            "/v3/api-docs/**"
     };
 
     @Bean

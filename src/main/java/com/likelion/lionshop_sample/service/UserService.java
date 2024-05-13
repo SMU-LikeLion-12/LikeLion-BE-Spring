@@ -32,16 +32,15 @@ public class UserService {
         return UserResponseDto.from(user);
     }
     @Transactional
-    public UserResponseDto updateUser(UpdateUserRequestDto userRequestDto) {
-        Long userId = userRequestDto.getId();
-        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("사용자가 존재하지 않습니다."));
+    public UserResponseDto updateUser(String email, UpdateUserRequestDto userRequestDto) {
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new IllegalArgumentException("사용자가 존재하지 않습니다."));
         user.update(userRequestDto);
         userRepository.save(user);
         return UserResponseDto.from(user);
 
     }
     @Transactional
-    public void deleteUser(Long userId) {
-        userRepository.deleteById(userId);
+    public void deleteUser(String email) {
+        userRepository.deleteByEmail(email);
     }
 }

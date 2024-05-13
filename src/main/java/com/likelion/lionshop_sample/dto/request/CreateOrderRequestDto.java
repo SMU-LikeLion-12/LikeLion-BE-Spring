@@ -18,8 +18,6 @@ public class CreateOrderRequestDto {
     //가격
     public int price;
 
-    public Long userId;
-
 
     //OrderDto -> Order Entity로 변환하는 메서드
     public Order toEntity() {

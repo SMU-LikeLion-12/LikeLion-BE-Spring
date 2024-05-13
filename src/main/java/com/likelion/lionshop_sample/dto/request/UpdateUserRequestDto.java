@@ -9,8 +9,6 @@ import lombok.NoArgsConstructor;
 @Getter
 public class UpdateUserRequestDto {
 
-    public Long id;
-
     public String name;
 
     public String address;
