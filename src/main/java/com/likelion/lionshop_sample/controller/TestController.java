@@ -2,6 +2,7 @@ package com.likelion.lionshop_sample.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("")
 @Tag(name = "Test")
+@CrossOrigin(originPatterns = "*")
 public class TestController {
 
     @Operation(method = "GET", summary = "테스트용 API", description = "Health Check 용")

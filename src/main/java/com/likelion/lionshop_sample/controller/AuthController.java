@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("")
 @Tag(name = "인증 API", description = "인증 관련 컨트롤러 입니다.")
+@CrossOrigin(originPatterns = "*")
 public class AuthController {
 
     private final AuthService authService;

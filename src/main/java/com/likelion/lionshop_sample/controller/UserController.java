@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("/user") // uri가 /user로 시작하는 요청을 받습니다.
 @Tag(name = "사용자 API", description = "사용자 관련 API입니다.")
+@CrossOrigin(originPatterns = "*")
 public class UserController {
 
     private final UserService userService;
