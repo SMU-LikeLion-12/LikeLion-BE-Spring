@@ -27,7 +27,7 @@ public class AuthController {
     @PostMapping("/auth/reissue")
     public ResponseEntity<?> reissue(@RequestBody JwtDto jwtDto) {
 
-        log.info("[ Auth Controller ] 토큰을 재발급합니다. ");
+//        log.info("[ Auth Controller ] 토큰을 재발급합니다. ");
 
         return ResponseEntity.ok(authService.reissueToken(jwtDto));
     }

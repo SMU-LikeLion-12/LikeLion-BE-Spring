@@ -31,7 +31,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
-        log.info("[ JwtAuthorizationFilter ] 인가 필터 작동");
+//        log.info("[ JwtAuthorizationFilter ] 인가 필터 작동");
 
         try {
             //Request 에서 access token 추출
@@ -39,7 +39,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
             // accessToken 없이 접근할 경우 필터를 건너뜀
             if (accessToken == null) {
-                log.info("[ JwtAuthorizationFilter ] Access Token 이 존재하지 않음. 필터를 건너뜁니다.");
+//                log.info("[ JwtAuthorizationFilter ] Access Token 이 존재하지 않음. 필터를 건너뜁니다.");
                 filterChain.doFilter(request, response);
                 return;
             }
@@ -52,22 +52,22 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 //            }
 
             authenticateAccessToken(accessToken);
-            log.info("[ JwtAuthorizationFilter ] 종료. 다음 필터로 넘어갑니다.");
+//            log.info("[ JwtAuthorizationFilter ] 종료. 다음 필터로 넘어갑니다.");
             filterChain.doFilter(request, response);
         } catch (ExpiredJwtException e) {
-            logger.warn("[ JwtAuthorizationFilter ] accessToken 이 만료되었습니다.");
+//            logger.warn("[ JwtAuthorizationFilter ] accessToken 이 만료되었습니다.");
             response.setStatus(HttpStatus.UNAUTHORIZED.value()); // 401 return
             response.setCharacterEncoding("UTF-8");
-            response.getWriter().write("Access Token 이 만료되었습니다.");
+//            response.getWriter().write("Access Token 이 만료되었습니다.");
         }
     }
 
     private void authenticateAccessToken(String accessToken) {
-        log.info("[ JwtAuthorizationFilter ] 토큰으로 인가 과정을 시작합니다. ");
+//        log.info("[ JwtAuthorizationFilter ] 토큰으로 인가 과정을 시작합니다. ");
 
         //AccessToken 유효성 검증
         jwtUtil.validateToken(accessToken);
-        log.info("[ JwtAuthorizationFilter ] Access Token 유효성 검증 성공. ");
+//        log.info("[ JwtAuthorizationFilter ] Access Token 유효성 검증 성공. ");
 
         //CustomUserDetail 객체 생성
         CustomUserDetails userDetails = new CustomUserDetails(
@@ -76,7 +76,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 jwtUtil.getRoles(accessToken)
         );
 
-        log.info("[ JwtAuthorizationFilter ] UserDetails 객체 생성 성공");
+//        log.info("[ JwtAuthorizationFilter ] UserDetails 객체 생성 성공");
 
         // Spring Security 인증 토큰 생성
         Authentication authToken = new UsernamePasswordAuthenticationToken(
@@ -87,6 +87,6 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         // SecurityContextHolder 에 현재 인증 객체 저장
         SecurityContextHolder.getContext().setAuthentication(authToken);
 
-        log.info("[ JwtAuthorizationFilter ] 인증 객체 저장 완료");
+//        log.info("[ JwtAuthorizationFilter ] 인증 객체 저장 완료");
     }
 }

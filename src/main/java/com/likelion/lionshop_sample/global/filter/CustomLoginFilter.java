@@ -35,7 +35,7 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
             @NonNull HttpServletRequest request,
             @NonNull HttpServletResponse response) throws AuthenticationException {
 
-        log.info("[ Login Filter ]  로그인 시도 : Custom Login Filter 작동 ");
+//        log.info("[ Login Filter ]  로그인 시도 : Custom Login Filter 작동 ");
         ObjectMapper objectMapper = new ObjectMapper();
         LoginRequestDto requestBody;
         try {
@@ -48,14 +48,14 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
         String email = requestBody.getEmail(); //Email 추출
         String password = requestBody.getPassword(); //password 추출
         log.info("[ Login Filter ]  Email ---> {} ", email);
-        log.info("[ Login Filter ]  Password ---> {} ", password);
+//        log.info("[ Login Filter ]  Password ---> {} ", password);
 
         //UserNamePasswordToken 생성 (인증용 객체)
         UsernamePasswordAuthenticationToken authToken
                 = new UsernamePasswordAuthenticationToken(email, password, null);
 
-        log.info("[ Login Filter ] 인증용 객체 UsernamePasswordAuthenticationToken 이 생성되었습니다. ");
-        log.info("[ Login Filter ] 인증을 시도합니다.");
+//        log.info("[ Login Filter ] 인증용 객체 UsernamePasswordAuthenticationToken 이 생성되었습니다. ");
+//        log.info("[ Login Filter ] 인증을 시도합니다.");
 
         //인증 시도
         return authenticationManager.authenticate(authToken);
@@ -70,7 +70,7 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
             @NonNull Authentication authentication) throws IOException {
 
 
-        log.info("[ Login Filter ] 로그인에 성공 하였습니다.");
+//        log.info("[ Login Filter ] 로그인에 성공 하였습니다.");
 
         CustomUserDetails customUserDetails = (CustomUserDetails)authentication.getPrincipal();
 
@@ -97,7 +97,7 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
             @NonNull HttpServletResponse response,
             @NonNull AuthenticationException failed) throws IOException {
 
-        log.info("[ Login Filter ] 로그인에 실패하였습니다.");
+//        log.info("[ Login Filter ] 로그인에 실패하였습니다.");
 
         String errorMessage;
         if (failed instanceof BadCredentialsException) {

@@ -48,7 +48,7 @@ public class UserController {
     @GetMapping("")
     public ResponseEntity<?> getUser(@AuthenticationPrincipal UserDetails userDetails) {
 
-        log.info("User Email ---> {}", userDetails.getUsername());
+//        log.info("User Email ---> {}", userDetails.getUsername());
         return ResponseEntity.ok(userService.getUser(userDetails.getUsername()));
     }
 
