@@ -45,7 +45,7 @@ public class JwtUtil {
 
     // JWT 토큰을 입력으로 받아 토큰의 subject 로부터 사용자 Email 추출하는 메서드
     public String getEmail(String token) throws SignatureException {
-        log.info("[ JwtUtil ] 토큰에서 이메일을 추출합니다.");
+//        log.info("[ JwtUtil ] 토큰에서 이메일을 추출합니다.");
         return Jwts.parser()
                 .verifyWith(secretKey)
                 .build()
@@ -56,7 +56,7 @@ public class JwtUtil {
 
     // JWT 토큰을 입력으로 받아 토큰의 claim 에서 사용자 권한을 추출하는 메서드
     public String getRoles(String token) throws SignatureException{
-        log.info("[ JwtUtil ] 토큰에서 권한을 추출합니다.");
+//        log.info("[ JwtUtil ] 토큰에서 권한을 추출합니다.");
         return Jwts.parser()
                 .verifyWith(secretKey)
                 .build()
@@ -68,7 +68,7 @@ public class JwtUtil {
     // Token 발급하는 메서드
     public String tokenProvider(CustomUserDetails customUserDetails, Instant expiration) {
 
-        log.info("[ JwtUtil ] 토큰을 새로 생성합니다.");
+//        log.info("[ JwtUtil ] 토큰을 새로 생성합니다.");
         //현재 시간
         Instant issuedAt = Instant.now();
 
@@ -120,7 +120,7 @@ public class JwtUtil {
                 null,
                 getRoles(refreshToken)
         );
-        log.info("[ JwtUtil ] 새로운 토큰을 재발급 합니다.");
+//        log.info("[ JwtUtil ] 새로운 토큰을 재발급 합니다.");
 
         // 재발급
         return new JwtDto(
@@ -131,7 +131,7 @@ public class JwtUtil {
 
     // HTTP 요청의 'Authorization' 헤더에서 JWT 액세스 토큰을 검색
     public String resolveAccessToken(HttpServletRequest request) {
-        log.info("[ JwtUtil ] 헤더에서 토큰을 추출합니다.");
+//        log.info("[ JwtUtil ] 헤더에서 토큰을 추출합니다.");
         String tokenFromHeader = request.getHeader("Authorization");
 
         if (tokenFromHeader == null || !tokenFromHeader.startsWith("Bearer ")) {
@@ -139,7 +139,7 @@ public class JwtUtil {
             return null;
         }
 
-        log.info("[ JwtUtil ] 헤더에 토큰이 존재합니다.");
+//        log.info("[ JwtUtil ] 헤더에 토큰이 존재합니다.");
 
         return tokenFromHeader.split(" ")[1]; //Bearer 와 분리
     }
@@ -155,7 +155,7 @@ public class JwtUtil {
     }
 
     public void validateToken(String token) {
-        log.info("[ JwtUtil ] 토큰의 유효성을 검증합니다.");
+//        log.info("[ JwtUtil ] 토큰의 유효성을 검증합니다.");
         try {
             // 구문 분석 시스템의 시계가 JWT를 생성한 시스템의 시계 오차 고려
             // 약 3분 허용.

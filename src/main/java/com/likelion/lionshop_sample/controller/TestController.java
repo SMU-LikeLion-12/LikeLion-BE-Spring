@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("")
 @Tag(name = "Test")
-@CrossOrigin(originPatterns = "*")
 public class TestController {
 
     @Operation(method = "GET", summary = "테스트용 API", description = "Health Check 용")

@@ -21,7 +21,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/order") // uri가 /order로 시작하는 요청을 받습니다.
 @Tag(name = "주문 API", description = "주문 관련 API입니다.")
-@CrossOrigin(originPatterns = "*")
 public class OrderController {
 
     private final OrderService orderService;
