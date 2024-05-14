@@ -51,8 +51,9 @@ public class SecurityConfig {
 
         // CORS 정책 설정
         http
-                .cors(cors -> cors
-                        .configurationSource(CorsConfig.apiConfigurationSource()));
+                .cors(cors -> cors.disable()
+//                        .configurationSource(CorsConfig.apiConfigurationSource())
+                );
 
         // csrf 비활성화
         http
