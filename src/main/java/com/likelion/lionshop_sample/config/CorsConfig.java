@@ -2,6 +2,7 @@ package com.likelion.lionshop_sample.config;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -9,6 +10,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class CorsConfig implements WebMvcConfigurer {
@@ -19,9 +21,10 @@ public class CorsConfig implements WebMvcConfigurer {
         //데이터 교환이 가능한 URL 지정
         ArrayList<String> allowedOriginPatterns = new ArrayList<>();
         allowedOriginPatterns.add("http://localhost:5000");
+        allowedOriginPatterns.add("http://localhost:5500");
         allowedOriginPatterns.add("http://127.0.0.1:5000");
+        allowedOriginPatterns.add("http://127.0.0.1:5500");
         configuration.setAllowedOrigins(allowedOriginPatterns);
-        configuration.addAllowedOrigin("*"); //모두 허용
 
         //허용하는 HTTP METHOD 지정
         ArrayList<String> allowedHttpMethods = new ArrayList<>();
@@ -32,6 +35,7 @@ public class CorsConfig implements WebMvcConfigurer {
         configuration.setAllowedMethods(allowedHttpMethods);
 
         configuration.setAllowedHeaders(Collections.singletonList("*"));
+        configuration.setAllowedHeaders(List.of(HttpHeaders.AUTHORIZATION, HttpHeaders.CONTENT_TYPE));
         configuration.setAllowCredentials(true); //credential TRUE
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
