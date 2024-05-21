@@ -15,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class CorsConfig implements WebMvcConfigurer {
 
-    public static CorsConfigurationSource apiConfigurationSource() {
+    public static CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
         //데이터 교환이 가능한 URL 지정

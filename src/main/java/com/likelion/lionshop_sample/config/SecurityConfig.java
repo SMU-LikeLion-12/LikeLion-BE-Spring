@@ -6,6 +6,7 @@ import com.likelion.lionshop_sample.utils.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -52,7 +53,7 @@ public class SecurityConfig {
         // CORS 정책 설정
         http
                 .cors(cors -> cors
-                        .configurationSource(CorsConfig.apiConfigurationSource())
+                        .configurationSource(CorsConfig.corsConfigurationSource())
                 );
 
         // csrf 비활성화

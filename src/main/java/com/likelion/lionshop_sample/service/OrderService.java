@@ -43,9 +43,9 @@ public class OrderService {
     public OrderResponseDto getOrder(String email, Long orderId) {
         Order order = orderRepository.findById(orderId).orElseThrow(()-> new IllegalArgumentException("상품이 존재하지 않습니다."));
 
-//        if (!order.getUser().getEmail().equals(email)) {
-//            throw new SecurityException("권한이 없습니다.");
-//        }
+        if (!order.getUser().getEmail().equals(email)) {
+            throw new SecurityException("권한이 없습니다.");
+        }
 
         return OrderResponseDto.from(order);
 

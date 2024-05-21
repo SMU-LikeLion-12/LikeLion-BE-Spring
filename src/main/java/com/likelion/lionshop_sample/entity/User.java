@@ -2,6 +2,8 @@ package com.likelion.lionshop_sample.entity;
 
 import com.likelion.lionshop_sample.dto.request.CreateOrderRequestDto;
 import com.likelion.lionshop_sample.dto.request.UpdateUserRequestDto;
+import com.likelion.lionshop_sample.entity.common.BaseEntity;
+import com.likelion.lionshop_sample.entity.enums.UserStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,7 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @Table(name = "user")
-public class User {
+public class User extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,6 +38,9 @@ public class User {
 
     @Column
     private String roles;
+
+    @Column
+    private UserStatus status;
 
     @Column
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
